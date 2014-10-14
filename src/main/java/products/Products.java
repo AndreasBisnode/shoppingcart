@@ -1,9 +1,12 @@
 package products;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import util.StatusCodes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by andgra on 2014-10-10.
@@ -29,10 +32,20 @@ public class Products {
      * @param vatAmount
      * @return
      */
-    public String createProduct(String id, String name, double priceIncVat, double vatPercentage, double vatAmount) {
+    private Product createProduct(String id, String name, double priceIncVat, double vatPercentage, double vatAmount) {
         Product product = new Product(id, name, priceIncVat, vatPercentage, vatAmount);
         productHashMap.put(id, product);
-        return "200";  //CREATED
+        return product;
+    }
+    public Product createProduct(String jsonProduct) {
+        Object obj= JSONValue.parse(jsonProduct);
+        JSONObject jobj = new JSONObject((Map) obj);
+
+
+        Product product = createProduct((String)jobj.get("id"),(String)jobj.get("name"),
+                (Double)jobj.get("priceIncVat"),(Double)jobj.get("vatPercentage"),(Double)jobj.get("vatAmount"));
+        return product;  //CREATED
+
     }
 
     /**
@@ -60,7 +73,7 @@ public class Products {
      * @param id
      * @return
      */
-    public String deleteProduct(Long id) {
+    public String deleteProduct(String id) {
         String statusCode;
         if(productHashMap.containsKey(id)){
             productHashMap.remove(id).toString();

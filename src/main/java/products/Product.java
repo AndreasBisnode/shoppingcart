@@ -11,7 +11,14 @@ public class Product {
     private double vatPercentage;
     private double vatAmount;
 
-    protected Product(String id, String name, double priceIncVat, double vatPercentage, double vatAmount){
+    public Product(String id, String name, double priceIncVat, double vatPercentage, double vatAmount){
+        this.id = id;
+        this.name = name;
+        this.priceIncVat = priceIncVat;
+        this.vatPercentage = vatPercentage;
+        this.vatAmount = vatAmount;
+    }
+    public Product(){
         this.id = id;
         this.name = name;
         this.priceIncVat = priceIncVat;
@@ -19,43 +26,43 @@ public class Product {
         this.vatAmount = vatAmount;
     }
 
-    protected String getId() {
+    public String getId() {
         return id;
     }
 
-    protected void setId(String id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    protected String getName() {
+    public String getName() {
         return name;
     }
 
-    protected void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    protected double getPriceIncVat() {
+    public double getPriceIncVat() {
         return priceIncVat;
     }
 
-    protected void setPriceIncVat(double priceIncVat) {
+    public void setPriceIncVat(double priceIncVat) {
         this.priceIncVat = priceIncVat;
     }
 
-    protected double getVatPercentage() {
+    public double getVatPercentage() {
         return vatPercentage;
     }
 
-    protected void setVatPercentage(double vatPercentage) {
+    public void setVatPercentage(double vatPercentage) {
         this.vatPercentage = vatPercentage;
     }
 
-    protected double getVatAmount() {
+    public double getVatAmount() {
         return vatAmount;
     }
 
-    protected void setVatAmount(double vatAmount) {
+    public void setVatAmount(double vatAmount) {
         this.vatAmount = vatAmount;
     }
 }
