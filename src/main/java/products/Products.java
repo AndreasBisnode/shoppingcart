@@ -2,7 +2,7 @@ package products;
 
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import util.StatusCodes;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,14 +37,29 @@ public class Products {
         productHashMap.put(id, product);
         return product;
     }
-    public Product createProduct(String jsonProduct) {
+
+    public String createProduct(String jsonProduct) {
         Object obj= JSONValue.parse(jsonProduct);
         JSONObject jobj = new JSONObject((Map) obj);
 
 
         Product product = createProduct((String)jobj.get("id"),(String)jobj.get("name"),
                 (Double)jobj.get("priceIncVat"),(Double)jobj.get("vatPercentage"),(Double)jobj.get("vatAmount"));
-        return product;  //CREATED
+        return product.getId();  //CREATED
+
+    }
+    public String changeProduct(String jsonProduct) {
+        Object obj= JSONValue.parse(jsonProduct);
+        JSONObject jobj = new JSONObject((Map) obj);
+        String id = (String)jobj.get("id");
+
+        Product product = productHashMap.get(id);
+        product.setName((String)jobj.get("name"));
+        product.setPriceIncVat((Double)jobj.get("priceIncVat"));
+        product.setVatPercentage((Double)jobj.get("vatPercentage"));
+        product.setVatAmount((Double)jobj.get("vatAmount"));
+
+        return product.getId();  //CREATED
 
     }
 
@@ -73,13 +88,14 @@ public class Products {
      * @param id
      * @return
      */
-    public String deleteProduct(String id) {
-        String statusCode;
+    public HttpStatus deleteProduct(String id) {
+        HttpStatus statusCode;
         if(productHashMap.containsKey(id)){
-            productHashMap.remove(id).toString();
-            statusCode = StatusCodes.OK; //Fel kod?
+
+            productHashMap.remove(id);
+            statusCode = HttpStatus.OK; //Fel kod?
         } else{
-            statusCode = StatusCodes.BAD_REQUEST; //Fel kod?
+            statusCode = HttpStatus.NOT_FOUND; //Fel kod?
         }
         return statusCode;
     }

@@ -8,10 +8,70 @@ import java.util.ArrayList;
  * Created by andgra on 2014-10-10.
  */
 public class Cart {
-    private long id;
-    private int rows;
+    private String id;
+    private ArrayList<Product> rows;
     private double totalPriceIncVatAmount;
     private double totalVatAmount;
-    private ArrayList<Product> productsList;
+    //private ArrayList<Product> productsList;
 
+    public Cart(String id, ArrayList<Product> rows, double totalPriceIncVatAmount, double totalVatAmount){
+        this.id = id;
+        this.rows = rows;
+        this.totalPriceIncVatAmount = totalPriceIncVatAmount;
+        this.totalVatAmount = totalVatAmount;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public ArrayList<Product> getRows() {
+        return rows;
+    }
+
+    public void setRows(ArrayList<Product> rows) {
+        this.rows = rows;
+    }
+
+    public double getTotalPriceIncVatAmount() {
+        return totalPriceIncVatAmount;
+    }
+
+    public void setTotalPriceIncVatAmount(double totalPriceIncVatAmount) {
+        this.totalPriceIncVatAmount = totalPriceIncVatAmount;
+    }
+
+    public double getTotalVatAmount() {
+        return totalVatAmount;
+    }
+
+    public void setTotalVatAmount(double totalVatAmount) {
+        this.totalVatAmount = totalVatAmount;
+    }
+
+    public void addProductInRow(Product product) {
+        this.rows.add(product);
+    }
+
+  /*  public ArrayList<Product> getProductsList() {
+        return productsList;
+    }
+
+    public void setProductsList(ArrayList<Product> productsList) {
+        this.productsList = productsList;
+    }
+    public Product getProduct(String productId){
+        Product product = null;
+        for (Product item: productsList){
+            if (item.getId().equals(productId)){
+                product = item;
+            }
+
+        }
+        return product;
+    }*/
 }
