@@ -22,7 +22,7 @@ public class CartsController {
         return CARTS.getCarts();
     }
     @RequestMapping(value = "/carts/{id}", method= RequestMethod.GET)
-    public ResponseEntity<Cart> getCart( @PathVariable("id") String id){
+    public @ResponseBody ResponseEntity<Cart> getCart( @PathVariable("id") String id){
         Cart product = CARTS.getCart(id);
         HttpStatus httpStatus;
         if (product == null){

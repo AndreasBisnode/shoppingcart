@@ -29,7 +29,7 @@ public class Carts {
         ArrayList<Cart> cartArrayList = new ArrayList<Cart>(cartsHashMap.values());
         return cartArrayList;
     }
-    private Cart createCart(String id, ArrayList<Product> rows, double totalPriceIncVatAmount, double totalVatAmount) {
+    private Cart createCart(String id, ArrayList<CartRowItem> rows, double totalPriceIncVatAmount, double totalVatAmount) {
         Cart cart = new Cart(id, rows, totalPriceIncVatAmount, totalVatAmount);
         cartsHashMap.put(id, cart);
         return cart;
@@ -39,7 +39,7 @@ public class Carts {
         Object obj= JSONValue.parse(jsonProduct);
 
         JSONObject jobj = new JSONObject((Map) obj);
-        ArrayList<Product> rows = (ArrayList<Product>)jobj.get("rows");
+        ArrayList<CartRowItem> rows = (ArrayList<CartRowItem>)jobj.get("rows");
         Cart cart = createCart((String)jobj.get("id"),rows,
                 (Double)jobj.get("totalPriceIncVatAmount"),(Double)jobj.get("totalVatAmount"));
         return cart.getId();  //CREATED
@@ -67,17 +67,19 @@ public class Carts {
 
         Cart cart = cartsHashMap.get(cartId);
 
-        String productId = (String)jobj.get("id");
+        String productId = (String)jobj.get("productId");
         Product product = Products.getInstance().getProduct(productId);
+        CartRowItem cartRowItem = new CartRowItem(product, ((Double)jobj.get("quantity")));
+        cart.addProductInRow(cartRowItem);
 
-        cart.setRows();
 
-        cart.s((String)jobj.get("quantity"));
+
+       /* cart.s((Double)jobj.get("quantity"));
         product.setPriceIncVat((Double)jobj.get("priceIncVat"));
         product.setVatPercentage((Double)jobj.get("vatPercentage"));
-        product.setVatAmount((Double)jobj.get("vatAmount"));
+        product.setVatAmount((Double)jobj.get("vatAmount"));*/
 
-        return product.getId();  //CREATED
+        return "YAAAD";  //CREATED
 
     }
 }

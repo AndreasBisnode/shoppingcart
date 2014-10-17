@@ -34,7 +34,7 @@ public class ProductsTest{
         double vatAmount = 3;
 
         String statusCode = PRODUCTS.createProduct(id, name, priceIncVat, vatPercentage, vatAmount);
-        Product product = PRODUCTS.getProduct(id);
+        CartRowItem product = PRODUCTS.getProduct(id);
         assert (product.getName().equals(name));
         assert (statusCode.equals("201 Created"));
     }

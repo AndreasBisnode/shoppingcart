@@ -1,7 +1,5 @@
 package carts;
 
-import products.Product;
-
 import java.util.ArrayList;
 
 /**
@@ -9,12 +7,12 @@ import java.util.ArrayList;
  */
 public class Cart {
     private String id;
-    private ArrayList<Product> rows;
+    private ArrayList<CartRowItem> rows;
     private double totalPriceIncVatAmount;
     private double totalVatAmount;
     //private ArrayList<Product> productsList;
 
-    public Cart(String id, ArrayList<Product> rows, double totalPriceIncVatAmount, double totalVatAmount){
+    public Cart(String id, ArrayList<CartRowItem> rows, double totalPriceIncVatAmount, double totalVatAmount){
         this.id = id;
         this.rows = rows;
         this.totalPriceIncVatAmount = totalPriceIncVatAmount;
@@ -29,11 +27,11 @@ public class Cart {
         this.id = id;
     }
 
-    public ArrayList<Product> getRows() {
+    public ArrayList<CartRowItem> getRows() {
         return rows;
     }
 
-    public void setRows(ArrayList<Product> rows) {
+    public void setRows(ArrayList<CartRowItem> rows) {
         this.rows = rows;
     }
 
@@ -53,8 +51,8 @@ public class Cart {
         this.totalVatAmount = totalVatAmount;
     }
 
-    public void addProductInRow(Product product) {
-        this.rows.add(product);
+    public void addProductInRow(CartRowItem cartRowItem) {
+        this.rows.add(cartRowItem);
     }
 
   /*  public ArrayList<Product> getProductsList() {
