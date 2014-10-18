@@ -51,6 +51,23 @@ public class Cart {
         this.totalVatAmount = totalVatAmount;
     }
 
+    public double calculateTotalPriceIncVatAmount(){
+        double totalPriceIncVat = 0;
+        for (CartRowItem cartRowItem: rows){
+            totalPriceIncVat = totalPriceIncVat + cartRowItem.getProduct().getPriceIncVat();
+
+        }
+        return totalPriceIncVat;
+    }
+    public double calculateTotalVatAmount(){
+        double totalVatAmount = 0;
+        for (CartRowItem cartRowItem: rows){
+            totalVatAmount = totalVatAmount + cartRowItem.getProduct().getVatAmount();
+
+        }
+        return totalVatAmount;
+    }
+
     public void addProductInRow(CartRowItem cartRowItem) {
         this.rows.add(cartRowItem);
     }

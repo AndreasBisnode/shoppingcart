@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: products.ProductsTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.057 sec <<< FAILURE! - in products.ProductsTest
+createProduct(products.ProductsTest)  Time elapsed: 0.004 sec  <<< FAILURE!
+java.lang.AssertionError: null
+	at products.ProductsTest.createProduct(ProductsTest.java:36)
+
+deleteProduct(products.ProductsTest)  Time elapsed: 0 sec  <<< FAILURE!
+java.lang.AssertionError: null
+	at products.ProductsTest.deleteProduct(ProductsTest.java:45)
+

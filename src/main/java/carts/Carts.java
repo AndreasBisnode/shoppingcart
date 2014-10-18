@@ -57,8 +57,14 @@ public class Carts {
         return statusCode;
     }
     public Cart getCart(String id) {
-        return cartsHashMap.get(id);
+        Cart cart = cartsHashMap.get(id);
+        //fiffigt eller ej?, hur kan man annars göra? Bör man räkna ut priset tidigare? @question
+        if (cart != null){
+            cart.setTotalPriceIncVatAmount(cart.calculateTotalPriceIncVatAmount());
+            cart.setTotalVatAmount(cart.calculateTotalVatAmount());
+        }
 
+        return cart;
     }
     public String changeCart(String cartId, String jsonProduct) {
         Object obj= JSONValue.parse(jsonProduct);
@@ -79,7 +85,7 @@ public class Carts {
         product.setVatPercentage((Double)jobj.get("vatPercentage"));
         product.setVatAmount((Double)jobj.get("vatAmount"));*/
 
-        return "YAAAD";  //CREATED
+        return cartId;  //CREATED
 
     }
 }
