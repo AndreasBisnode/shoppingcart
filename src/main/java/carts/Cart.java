@@ -10,7 +10,6 @@ public class Cart {
     private ArrayList<CartRowItem> rows;
     private double totalPriceIncVatAmount;
     private double totalVatAmount;
-    //private ArrayList<Product> productsList;
 
     public Cart(String id, ArrayList<CartRowItem> rows, double totalPriceIncVatAmount, double totalVatAmount){
         this.id = id;
@@ -71,22 +70,4 @@ public class Cart {
     public void addProductInRow(CartRowItem cartRowItem) {
         this.rows.add(cartRowItem);
     }
-
-  /*  public ArrayList<Product> getProductsList() {
-        return productsList;
-    }
-
-    public void setProductsList(ArrayList<Product> productsList) {
-        this.productsList = productsList;
-    }
-    public Product getProduct(String productId){
-        Product product = null;
-        for (Product item: productsList){
-            if (item.getId().equals(productId)){
-                product = item;
-            }
-
-        }
-        return product;
-    }*/
 }

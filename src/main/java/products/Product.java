@@ -1,12 +1,10 @@
 package products;
 
-import java.io.Serializable;
-
 /**
  * Created by andgra on 2014-10-09.
  */
 
-public class Product implements Serializable {
+public class Product {
     private String id;
     private String name;
     private double priceIncVat;
@@ -20,14 +18,6 @@ public class Product implements Serializable {
         this.vatPercentage = vatPercentage;
         this.vatAmount = vatAmount;
     }
-    public Product(){
-        this.id = id;
-        this.name = name;
-        this.priceIncVat = priceIncVat;
-        this.vatPercentage = vatPercentage;
-        this.vatAmount = vatAmount;
-    }
-
     public String getId() {
         return id;
     }
