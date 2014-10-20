@@ -1,13 +1,11 @@
 package controllers;
 
 import carts.Cart;
-import carts.CartRowItem;
 import carts.Carts;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import products.Product;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -18,38 +16,6 @@ import java.util.ArrayList;
 @RestController
 public class CartsController {
     Carts CARTS = Carts.getInstance();
-
-    @RequestMapping(value = "/test", method= RequestMethod.GET)
-    public Cart test(){
-        return new Cart("id", new ArrayList<CartRowItem>( ),1,1);
-
-    }
-    @RequestMapping(value = "/test2", method= RequestMethod.GET)
-    public Cart test2(){
-        ArrayList<CartRowItem> array = new ArrayList<CartRowItem>();
-        Product product = new Product("d","d",0,0,0);
-        array.add(new CartRowItem(product, 2));
-        return new Cart("id", new ArrayList<CartRowItem>(),2,2);
-
-    }
-    @RequestMapping(value = "/test3", method= RequestMethod.GET)
-    public ArrayList<Cart> test3(){
-        ArrayList<CartRowItem> array = new ArrayList<CartRowItem>();
-        Product product = new Product("d","d",0,0,0);
-        array.add(new CartRowItem(product, 2));
-        Cart cart = new Cart("id", new ArrayList<CartRowItem>(),3,3);
-        cart.addProductInRow(new CartRowItem(product, 2));
-
-        ArrayList<Cart> as = new ArrayList<Cart>();
-        as.add(cart);
-        return as;
-
-    }
-    @RequestMapping(value = "/test4", method= RequestMethod.GET)
-    public String test4(){
-        return "d";
-
-    }
 
     @RequestMapping(value = "/carts", method= RequestMethod.GET)
     public @ResponseBody ArrayList<Cart> getCarts(){
