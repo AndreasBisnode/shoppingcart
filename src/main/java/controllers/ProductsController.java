@@ -8,6 +8,7 @@ import products.Product;
 import repository.ProductRepository;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,14 +52,14 @@ public class ProductsController {
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public Product getProduct(@PathVariable("id") final String id, @RequestBody String jsonProduct, final HttpServletResponse response) throws ResourceNotFoundException {
+    public Product getProduct(@PathVariable("id") final String id, @RequestBody String jsonProduct, final HttpServletResponse response) throws ResourceNotFoundException, IOException {
         response.setHeader("Location", "");
         return productRepository.saveProduct(jsonProduct);
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     @ResponseBody
-    public Product createProducts(@RequestBody final String jsonProduct, final HttpServletResponse response) {
+    public Product createProducts(@RequestBody final String jsonProduct, final HttpServletResponse response) throws IOException {
         Product product = productRepository.saveProduct(jsonProduct);
         String location = "http://localhost:8080/products/" + product.getId();
         response.setHeader("Location", location);
