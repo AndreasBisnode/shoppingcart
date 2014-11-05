@@ -1,5 +1,7 @@
 package controllers;
 
+import exception.ResourceNotFoundException;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,21 +23,29 @@ import java.util.Optional;
 @Service
 public class ProductsController {
     ProductRepository productRepository;
+    Logger logger = (Logger) Logger.getInstance(getClass());
 
     @Autowired
     public void setProductRepository(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
 
-    @RequestMapping(value = "/products", method = RequestMethod.GET)
-    public List<Product> retrieveProducts() {
-        return productRepository.retrieveProducts();
-    }
-
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public void handleError(ResourceNotFoundException e) {
+        logger.error(e);
+    }
 
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleError(IOException e) {
+        e.printStackTrace();
+        logger.error(e);
+    }
+
+    @RequestMapping(value = "/products", method = RequestMethod.GET)
+    public List<Product> retrieveProducts() {
+        return productRepository.retrieveProducts();
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)

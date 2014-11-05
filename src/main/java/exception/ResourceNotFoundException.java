@@ -1,4 +1,4 @@
-package controllers;
+package exception;
 
 /**
  * Created by andgra on 2014-10-24.
