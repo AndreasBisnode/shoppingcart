@@ -1,10 +1,12 @@
 package controllers;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-@ComponentScan
+@Configuration
+@ComponentScan(basePackages = {"repository.*","controllers.*","*"})
 @EnableAutoConfiguration
 public class Application {
 

@@ -11,6 +11,9 @@ public class Product {
     private double vatPercentage;
     private double vatAmount;
 
+    public Product(){
+
+    }
     public Product(String id, String name, double priceIncVat, double vatPercentage, double vatAmount){
         this.id = id;
         this.name = name;

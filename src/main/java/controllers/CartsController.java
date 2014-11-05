@@ -1,71 +1,93 @@
 package controllers;
 
 import carts.Cart;
-import carts.Carts;
-import org.springframework.http.HttpHeaders;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import repository.CartRepository;
 
-import java.net.URI;
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by andgra on 2014-10-10.
  */
 @RestController
+@Service
 public class CartsController {
-    Carts CARTS = Carts.getInstance();
+    CartRepository cartRepository;
+    Logger logger = (Logger) Logger.getInstance(getClass());
 
-    @RequestMapping(value = "/carts", method= RequestMethod.GET)
-    public @ResponseBody ArrayList<Cart> getCarts(){
-        return CARTS.getCarts();
+    @Autowired
+    public void setCartRepository(CartRepository cartRepository) {
+        this.cartRepository = cartRepository;
     }
-    @RequestMapping(value = "/carts/{id}", method= RequestMethod.GET)
-    public @ResponseBody ResponseEntity<Cart> getCart( @PathVariable("id") String id){
-        Cart cart = CARTS.getCart(id);
-        HttpStatus httpStatus;
-        if (cart == null){
-            httpStatus = HttpStatus.NOT_FOUND;
-        }  else {
-            httpStatus = HttpStatus.OK;
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handleError(ResourceNotFoundException e) {
+        logger.error(e);
+    }
+
+    @ExceptionHandler(IOException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public void handleError(IOException e) {
+        e.printStackTrace();
+        logger.error(e);
+    }
+
+    @RequestMapping(value = "/carts", method = RequestMethod.GET)
+    public List<Cart> getCarts() {
+        return cartRepository.retrieveCarts();
+    }
+
+    @RequestMapping(value = "/carts/{id}", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Cart getCart(@PathVariable("id") String id, final HttpServletResponse response) throws ResourceNotFoundException {
+        Optional<Cart> cart = cartRepository.retrieveCart(id);
+        response.setHeader("Location", id);
+        if (cart.isPresent()) {
+            return cart.get();
+        } else {
+            throw new ResourceNotFoundException("Unable to find cart with id " + id);
         }
-        return new ResponseEntity<Cart>(cart, httpStatus) ;
     }
-    @RequestMapping(value = "/carts", method= RequestMethod.POST)
-    public @ResponseBody
-    ResponseEntity<String> createProducts(@RequestBody String jsonProduct){
-        String cart = CARTS.createCart(jsonProduct);
-        URI location = URI.create("http://localhost:8080/carts/" + cart);
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setLocation(location);
-        // return "http://localhost/products/search";
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(responseHeaders, HttpStatus.CREATED);
 
-        return responseEntity;
-        //http://h30499.www3.hp.com/t5/HP-Software-Developers-Blog/A-Comprehensive-Example-of-a-Spring-MVC-Application-Part-3/ba-p/6135449#.VDwyBvl_t34
-        // return PRODUCTS.createProduct(id, name, priceIncVat, vatPercentage, vatAmount);
+    @RequestMapping(value = "/carts", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    Cart createProducts(@RequestBody final String jsonProduct, final HttpServletResponse response) throws IOException {
+        Cart cart = cartRepository.saveCart(jsonProduct);
+        String location = "http://localhost:8080/carts/" + cart.getId();
+        response.setHeader("Location", location);
+        return cart;
     }
-    @RequestMapping(value = "/carts/{id}", method= RequestMethod.DELETE)
-    public  @ResponseBody ResponseEntity<String> deleteProduct(@PathVariable("id") String id) {
-        HttpStatus httpStatus = CARTS.deleteCart(id);
 
-        return new ResponseEntity<String>(httpStatus);
-
-    }
-    @RequestMapping(value = "/carts/{id}", method= RequestMethod.PUT)
-    public ResponseEntity<Cart> getCart( @PathVariable("id") String cartId, @RequestBody String jsonProduct){
-
-        String cart = CARTS.changeCart(cartId ,jsonProduct);
-        URI location = URI.create("http://localhost:8080/products/" + cart);
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setLocation(location);
-        HttpStatus httpStatus;
-        if (cart == null){
-            httpStatus = HttpStatus.NOT_FOUND;
-        }  else {
-            httpStatus = HttpStatus.OK;
+    @RequestMapping(value = "/carts/{id}", method = RequestMethod.DELETE)
+    public
+    @ResponseBody
+    Cart deleteCart(@PathVariable("id") String id, HttpServletResponse response) throws ResourceNotFoundException {
+        Optional<Cart> cart = cartRepository.deleteCart(id);
+        if (cart.isPresent()) {
+            return cart.get();
+        } else {
+            throw new ResourceNotFoundException("Unable to delete cart with id" + id);
         }
-        return new ResponseEntity<Cart>(responseHeaders, httpStatus) ;
+    }
+
+    @RequestMapping(value = "/carts/{id}", method = RequestMethod.PUT)
+    public Cart putCart(@PathVariable("id") String cartId, @RequestBody String jsonProduct, HttpServletResponse response) throws ResourceNotFoundException, IOException {
+        response.setHeader("Location", "http://localhost:8080/products/" + cartId);
+        Optional<Cart> cart = cartRepository.addProductInCart(cartId, jsonProduct);
+        if (cart.isPresent()) {
+            return cart.get();
+        } else {
+            throw new ResourceNotFoundException("Unable to find cart with id " + cartId);
+        }
     }
 }

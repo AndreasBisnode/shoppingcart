@@ -1,79 +1,79 @@
 package controllers;
 
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import products.Product;
-import products.Products;
+import repository.ProductRepository;
 
-import java.net.URI;
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by andgra on 2014-10-09.
  */
 
 
-
 @RestController
+@Service
 public class ProductsController {
-    Products PRODUCTS = Products.getInstance();
+    ProductRepository productRepository;
 
-                                   //http://spring.io/guides/tutorials/rest/2/
-   /* @RequestMapping(value = "/products", method= RequestMethod.GET)
-    public Product getProduct(@RequestParam(value="id", required=true) Long id){
-        return PRODUCTS.getProduct(id);
-    }*/
-    @RequestMapping(value = "/products", method= RequestMethod.GET)
-    public ArrayList<Product> getProducts(){
-        return PRODUCTS.getProducts();
+    @Autowired
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
     }
-    @RequestMapping(value = "/products/{id}", method= RequestMethod.GET)
-    public ResponseEntity<Product> getProduct( @PathVariable("id") String id){
-        Product product = PRODUCTS.getProduct(id);
-        HttpStatus httpStatus;
-        if (product == null){
-            httpStatus = HttpStatus.NOT_FOUND;
-        }  else {
-            httpStatus = HttpStatus.OK;
+
+    @RequestMapping(value = "/products", method = RequestMethod.GET)
+    public List<Product> retrieveProducts() {
+        return productRepository.retrieveProducts();
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handleError(ResourceNotFoundException e) {
+
+    }
+
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Product retrieveProduct(@PathVariable("id") final String id, final HttpServletResponse response) throws ResourceNotFoundException {
+        response.setHeader("Location", id);
+        Optional<Product> p = productRepository.retrieveProduct(id);
+        if (p.isPresent()) {
+            return p.get();
+        } else {
+            throw new ResourceNotFoundException("Unable to find product with id " + id);
         }
-        return new ResponseEntity<Product>(product, httpStatus) ;
     }
-    @RequestMapping(value = "/products/{id}", method= RequestMethod.PUT)
-    public ResponseEntity<Product> getProduct( @PathVariable("id") String id, @RequestBody String jsonProduct){
 
-        String product = PRODUCTS.changeProduct(jsonProduct);
-        URI location = URI.create("http://localhost:8080/products/" + product);
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setLocation(location);
-        HttpStatus httpStatus;
-        if (product == null){
-            httpStatus = HttpStatus.NOT_FOUND;
-        }  else {
-            httpStatus = HttpStatus.OK;
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Product getProduct(@PathVariable("id") final String id, @RequestBody String jsonProduct, final HttpServletResponse response) throws ResourceNotFoundException {
+        response.setHeader("Location", "");
+        return productRepository.saveProduct(jsonProduct);
+    }
+
+    @RequestMapping(value = "/products", method = RequestMethod.POST)
+    @ResponseBody
+    public Product createProducts(@RequestBody final String jsonProduct, final HttpServletResponse response) {
+        Product product = productRepository.saveProduct(jsonProduct);
+        String location = "http://localhost:8080/products/" + product.getId();
+        response.setHeader("Location", location);
+        return product;
+    }
+
+    @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Product deleteProduct(@PathVariable("id") String id) throws ResourceNotFoundException {
+        Optional<Product> p = productRepository.deleteProduct(id);
+        if (p.isPresent()) {
+            return p.get();
+        } else {
+            throw new ResourceNotFoundException("Unable to deleteProduct product with id: " + id);
         }
-        return new ResponseEntity<Product>(responseHeaders, httpStatus) ;
-    }
-
-    @RequestMapping(value = "/products", method= RequestMethod.POST)
-    public @ResponseBody ResponseEntity<String> createProducts(@RequestBody String jsonProduct){
-        String product = PRODUCTS.createProduct(jsonProduct);
-        URI location = URI.create("http://localhost:8080/products/" + product);
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setLocation(location);
-       // return "http://localhost/products/search";
-        ResponseEntity<String> responseEntity = new ResponseEntity<String>(responseHeaders, HttpStatus.CREATED);
-
-        return responseEntity;
-                        //http://h30499.www3.hp.com/t5/HP-Software-Developers-Blog/A-Comprehensive-Example-of-a-Spring-MVC-Application-Part-3/ba-p/6135449#.VDwyBvl_t34
-       // return PRODUCTS.createProduct(id, name, priceIncVat, vatPercentage, vatAmount);
-    }
-    @RequestMapping(value = "/products/{id}", method= RequestMethod.DELETE)
-    public  @ResponseBody ResponseEntity<String> deleteProduct(@PathVariable("id") String id) {
-        HttpStatus httpStatus = PRODUCTS.deleteProduct(id);
-
-        return new ResponseEntity<String>(httpStatus);
 
     }
 }

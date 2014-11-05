@@ -1,6 +1,7 @@
 package carts;
 
 import products.Product;
+import repository.ProductRepository;
 
 import java.io.Serializable;
 
@@ -8,8 +9,9 @@ import java.io.Serializable;
  * Created by andgra on 2014-10-17.
  */
 public class CartRowItem implements Serializable {
-    private transient Product product;
-    private double quantity;
+    public transient Product product;
+    public ProductRepository productRepository;
+    public double quantity;
 
 
     public CartRowItem(Product product, double quantity){

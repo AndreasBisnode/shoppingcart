@@ -11,11 +11,8 @@ public class Cart {
     private double totalPriceIncVatAmount;
     private double totalVatAmount;
 
-    public Cart(String id, ArrayList<CartRowItem> rows, double totalPriceIncVatAmount, double totalVatAmount){
-        this.id = id;
-        this.rows = rows;
-        this.totalPriceIncVatAmount = totalPriceIncVatAmount;
-        this.totalVatAmount = totalVatAmount;
+    public Cart(){
+
     }
 
     public String getId() {
@@ -32,6 +29,8 @@ public class Cart {
 
     public void setRows(ArrayList<CartRowItem> rows) {
         this.rows = rows;
+        setTotalPriceIncVatAmount(calculateTotalPriceIncVatAmount());
+        setTotalVatAmount(calculateTotalVatAmount());
     }
 
     public double getTotalPriceIncVatAmount() {
@@ -50,7 +49,7 @@ public class Cart {
         this.totalVatAmount = totalVatAmount;
     }
 
-    public double calculateTotalPriceIncVatAmount(){
+    private double calculateTotalPriceIncVatAmount(){
         double totalPriceIncVat = 0;
         for (CartRowItem cartRowItem: rows){
             totalPriceIncVat = totalPriceIncVat + cartRowItem.getProduct().getPriceIncVat();
@@ -58,7 +57,7 @@ public class Cart {
         }
         return totalPriceIncVat;
     }
-    public double calculateTotalVatAmount(){
+    private double calculateTotalVatAmount(){
         double totalVatAmount = 0;
         for (CartRowItem cartRowItem: rows){
             totalVatAmount = totalVatAmount + cartRowItem.getProduct().getVatAmount();
@@ -69,5 +68,7 @@ public class Cart {
 
     public void addProductInRow(CartRowItem cartRowItem) {
         this.rows.add(cartRowItem);
+        setTotalPriceIncVatAmount(calculateTotalPriceIncVatAmount());
+        setTotalVatAmount(calculateTotalVatAmount());
     }
 }
