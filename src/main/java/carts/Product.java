@@ -1,4 +1,4 @@
-package products;
+package carts;
 
 /**
  * Created by andgra on 2014-10-09.

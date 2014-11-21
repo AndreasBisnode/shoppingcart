@@ -1,6 +1,5 @@
 package carts;
 
-import products.Product;
 import repository.ProductRepository;
 
 import java.io.Serializable;
