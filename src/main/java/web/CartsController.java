@@ -1,14 +1,15 @@
-package controllers;
+package web;
 
-import carts.Cart;
+import model.Cart;
 import exception.ResourceNotFoundException;
+import model.Product;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 import repository.CartRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -19,26 +20,14 @@ import java.util.Optional;
  */
 @RestController
 @Service
-public class CartsController {
+public class CartsController extends BaseController {
+
     CartRepository cartRepository;
     Logger logger = (Logger) Logger.getInstance(getClass());
 
     @Autowired
-    public void setCartRepository(CartRepository cartRepository) {
+    public CartsController(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handleError(ResourceNotFoundException e) {
-        logger.error(e);
-    }
-
-    @ExceptionHandler(IOException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleError(IOException e) {
-        e.printStackTrace();
-        logger.error(e);
     }
 
     @RequestMapping(value = "/carts", method = RequestMethod.GET)
@@ -62,10 +51,9 @@ public class CartsController {
     @RequestMapping(value = "/carts", method = RequestMethod.POST)
     public
     @ResponseBody
-    Cart createProducts(@RequestBody final String jsonProduct, final HttpServletResponse response) throws IOException {
-        Cart cart = cartRepository.saveCart(jsonProduct);
-        String location = "http://localhost:8080/carts/" + cart.getId();
-        response.setHeader("Location", location);
+    Cart createCart(@RequestBody final Cart cart, final HttpServletResponse response, final HttpServletRequest request) throws IOException {
+        cartRepository.saveCart(cart);
+        response.setHeader("Location", request.getRequestURL()+"/"+cart.getId());
         return cart;
     }
 

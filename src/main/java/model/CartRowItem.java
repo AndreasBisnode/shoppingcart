@@ -1,4 +1,4 @@
-package carts;
+package model;
 
 import repository.ProductRepository;
 

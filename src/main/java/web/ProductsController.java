@@ -1,14 +1,13 @@
-package controllers;
+package web;
 
 import exception.ResourceNotFoundException;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
-import products.Product;
+import model.Product;
 import repository.ProductRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
@@ -21,26 +20,12 @@ import java.util.Optional;
 
 @RestController
 @Service
-public class ProductsController {
+public class ProductsController extends BaseController{
     ProductRepository productRepository;
-    Logger logger = (Logger) Logger.getInstance(getClass());
 
     @Autowired
-    public void setProductRepository(ProductRepository productRepository) {
+    public ProductsController(ProductRepository productRepository) {
         this.productRepository = productRepository;
-    }
-
-    @ExceptionHandler(ResourceNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handleError(ResourceNotFoundException e) {
-        logger.error(e);
-    }
-
-    @ExceptionHandler(IOException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handleError(IOException e) {
-        e.printStackTrace();
-        logger.error(e);
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
@@ -62,17 +47,16 @@ public class ProductsController {
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public Product getProduct(@PathVariable("id") final String id, @RequestBody String jsonProduct, final HttpServletResponse response) throws ResourceNotFoundException, IOException {
+    public Product getProduct(@PathVariable("id") final String id, @RequestBody Product jsonProduct, final HttpServletResponse response) throws ResourceNotFoundException, IOException {
         response.setHeader("Location", "");
         return productRepository.saveProduct(jsonProduct);
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     @ResponseBody
-    public Product createProducts(@RequestBody final String jsonProduct, final HttpServletResponse response) throws IOException {
+    public Product create(@RequestBody final Product jsonProduct, final HttpServletResponse response, final HttpServletRequest request) throws IOException {
         Product product = productRepository.saveProduct(jsonProduct);
-        String location = "http://localhost:8080/products/" + product.getId();
-        response.setHeader("Location", location);
+        response.setHeader("Location", request.getRequestURL()+"/"+product.getId());
         return product;
     }
 

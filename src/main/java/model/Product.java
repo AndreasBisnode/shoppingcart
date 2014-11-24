@@ -1,4 +1,4 @@
-package carts;
+package model;
 
 /**
  * Created by andgra on 2014-10-09.
