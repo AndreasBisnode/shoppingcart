@@ -14,24 +14,24 @@ import java.util.*;
 public class MapProductRepository implements ProductRepository{
     private Map<String, Product> productHashMap = new HashMap<String, Product>();
     @Override
-    public Product saveProduct(Product product) {
+    public Product save(Product product) {
         productHashMap.put(product.getId(), product);
         return product;
     }
 
     @Override
-    public ArrayList<Product> retrieveProducts() {
+    public ArrayList<Product> retrieve() {
         ArrayList<Product> products = new ArrayList<Product>(productHashMap.values());
         return products;
     }
 
     @Override
-    public Optional<Product> retrieveProduct(String id) {
+    public Optional<Product> retrieve(String id) {
         return Optional.ofNullable(productHashMap.get(id));
     }
 
     @Override
-    public Optional<Product> deleteProduct(String id) {
+    public Optional<Product> delete(String id) {
         return Optional.ofNullable(productHashMap.remove(id));
     }
 }

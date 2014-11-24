@@ -25,24 +25,24 @@ public class MapCartRepository implements CartRepository {
     }
 
     @Override
-    public Cart saveCart(Cart cart)  {
+    public Cart save(Cart cart)  {
         cartMap.put(cart.getId(), cart);
         return cart;
     }
 
     @Override
-    public List<Cart> retrieveCarts() {
+    public List<Cart> retrieve() {
         ArrayList<Cart> cartArrayList = new ArrayList<Cart>(cartMap.values());
         return cartArrayList;
     }
 
     @Override
-    public Optional<Cart> retrieveCart(String id) {
+    public Optional<Cart> retrieve(String id) {
         return Optional.ofNullable(cartMap.get(id));
     }
 
     @Override
-    public Optional<Cart> deleteCart(String id) {
+    public Optional<Cart> delete(String id) {
         return Optional.ofNullable(cartMap.remove(id));
     }
 
@@ -55,7 +55,7 @@ public class MapCartRepository implements CartRepository {
             e.printStackTrace();
         }
         Cart cart = Optional.ofNullable(cartMap.get(cartId)).get();
-        Product product = productRepository.retrieveProduct((String) valueMap.get("productId")).get();
+        Product product = productRepository.retrieve((String) valueMap.get("productId")).get();
         double quantity = Double.parseDouble(valueMap.get("quantity").toString());
         CartRowItem cartRowItem = new CartRowItem(product, quantity);
 
