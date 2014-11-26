@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan(basePackages = {"repository.*", "web.*","*"})
+@ComponentScan(basePackages = {"repository.*", "web.*","*","mongoDb.*"})
 @EnableAutoConfiguration
 public class Application {
 

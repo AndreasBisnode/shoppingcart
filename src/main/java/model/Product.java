@@ -1,10 +1,13 @@
 package model;
 
+
+
 /**
  * Created by andgra on 2014-10-09.
  */
 
 public class Product {
+
     private String id;
     private String name;
     private double priceIncVat;

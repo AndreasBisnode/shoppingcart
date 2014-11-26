@@ -30,14 +30,14 @@ public class ProductsController extends BaseController{
 
     @RequestMapping(value = "/products", method = RequestMethod.GET)
     public List<Product> retrieveProducts() {
-        return productRepository.retrieveProducts();
+        return productRepository.retrieve();
     }
 
     @RequestMapping(value = "/products/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Product retrieveProduct(@PathVariable("id") final String id, final HttpServletResponse response) throws ResourceNotFoundException {
         response.setHeader("Location", id);
-        Optional<Product> p = productRepository.retrieveProduct(id);
+        Optional<Product> p = productRepository.retrieve(id);
         if (p.isPresent()) {
             return p.get();
         } else {
@@ -49,13 +49,13 @@ public class ProductsController extends BaseController{
     @ResponseBody
     public Product getProduct(@PathVariable("id") final String id, @RequestBody Product jsonProduct, final HttpServletResponse response) throws ResourceNotFoundException, IOException {
         response.setHeader("Location", "");
-        return productRepository.saveProduct(jsonProduct);
+        return productRepository.save(jsonProduct);
     }
 
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     @ResponseBody
     public Product create(@RequestBody final Product jsonProduct, final HttpServletResponse response, final HttpServletRequest request) throws IOException {
-        Product product = productRepository.saveProduct(jsonProduct);
+        Product product = productRepository.save(jsonProduct);
         response.setHeader("Location", request.getRequestURL()+"/"+product.getId());
         return product;
     }
@@ -63,7 +63,7 @@ public class ProductsController extends BaseController{
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public Product deleteProduct(@PathVariable("id") String id) throws ResourceNotFoundException {
-        Optional<Product> p = productRepository.deleteProduct(id);
+        Optional<Product> p = productRepository.delete(id);
         if (p.isPresent()) {
             return p.get();
         } else {

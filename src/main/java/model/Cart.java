@@ -1,11 +1,14 @@
 package model;
 
+
+
 import java.util.ArrayList;
 
 /**
  * Created by andgra on 2014-10-10.
  */
 public class Cart {
+
     private String id;
     private ArrayList<CartRowItem> rows;
     private double totalPriceIncVatAmount;

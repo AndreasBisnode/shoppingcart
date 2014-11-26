@@ -32,14 +32,14 @@ public class CartsController extends BaseController {
 
     @RequestMapping(value = "/carts", method = RequestMethod.GET)
     public List<Cart> getCarts() {
-        return cartRepository.retrieveCarts();
+        return cartRepository.retrieve();
     }
 
     @RequestMapping(value = "/carts/{id}", method = RequestMethod.GET)
     public
     @ResponseBody
     Cart getCart(@PathVariable("id") String id, final HttpServletResponse response) throws ResourceNotFoundException {
-        Optional<Cart> cart = cartRepository.retrieveCart(id);
+        Optional<Cart> cart = cartRepository.retrieve(id);
         response.setHeader("Location", id);
         if (cart.isPresent()) {
             return cart.get();
@@ -52,7 +52,7 @@ public class CartsController extends BaseController {
     public
     @ResponseBody
     Cart createCart(@RequestBody final Cart cart, final HttpServletResponse response, final HttpServletRequest request) throws IOException {
-        cartRepository.saveCart(cart);
+        cartRepository.save(cart);
         response.setHeader("Location", request.getRequestURL()+"/"+cart.getId());
         return cart;
     }
@@ -61,7 +61,7 @@ public class CartsController extends BaseController {
     public
     @ResponseBody
     Cart deleteCart(@PathVariable("id") String id, HttpServletResponse response) throws ResourceNotFoundException {
-        Optional<Cart> cart = cartRepository.deleteCart(id);
+        Optional<Cart> cart = cartRepository.delete(id);
         if (cart.isPresent()) {
             return cart.get();
         } else {

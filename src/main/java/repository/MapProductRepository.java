@@ -10,7 +10,7 @@ import java.util.*;
 /**
  * Created by andgra on 2014-11-21.
  */
-@Service
+
 public class MapProductRepository implements ProductRepository{
     private Map<String, Product> productHashMap = new HashMap<String, Product>();
     @Override
