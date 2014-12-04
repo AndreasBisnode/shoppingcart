@@ -70,8 +70,8 @@ public class CartsController extends BaseController {
     }
 
     @RequestMapping(value = "/carts/{id}", method = RequestMethod.PUT)
-    public Cart putCart(@PathVariable("id") String cartId, @RequestBody String jsonProduct, HttpServletResponse response) throws ResourceNotFoundException, IOException {
-        response.setHeader("Location", "http://localhost:8080/products/" + cartId);
+    public Cart putCart(@PathVariable("id") String cartId, @RequestBody String jsonProduct, HttpServletResponse response, final HttpServletRequest request) throws ResourceNotFoundException, IOException {
+        response.setHeader("Location", request.getRequestURL()+"/"+ cartId);
         Optional<Cart> cart = cartRepository.addProductInCart(cartId, jsonProduct);
         if (cart.isPresent()) {
             return cart.get();
