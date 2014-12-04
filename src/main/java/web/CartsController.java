@@ -3,7 +3,6 @@ package web;
 import model.Cart;
 import exception.ResourceNotFoundException;
 import model.Product;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +20,7 @@ import java.util.Optional;
 @RestController
 @Service
 public class CartsController extends BaseController {
-
     CartRepository cartRepository;
-    Logger logger = (Logger) Logger.getInstance(getClass());
 
     @Autowired
     public CartsController(CartRepository cartRepository) {
