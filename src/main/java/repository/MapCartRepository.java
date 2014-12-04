@@ -1,5 +1,6 @@
 package repository;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import model.Cart;
 import model.CartRowItem;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -49,16 +50,13 @@ public class MapCartRepository implements CartRepository {
     }
 
     @Override
-    public Optional<Cart> addProductInCart(String cartId, String jsonProduct)  {
-        Map<String, Object> valueMap = null;
-        try {
-            valueMap = new ObjectMapper().readValue(jsonProduct, new TypeReference<Map<String, Object>>() {});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public Optional<Cart> addProductInCart(String cartId, String jsonProduct) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = mapper.readTree(jsonProduct);
+
         Cart cart = Optional.ofNullable(cartMap.get(cartId)).get();
-        Product product = productRepository.retrieve((String) valueMap.get("productId")).get();
-        double quantity = Double.parseDouble(valueMap.get("quantity").toString());
+        Product product = productRepository.retrieve(node.path("productId").textValue()).get();
+        double quantity = Double.parseDouble(node.path("quantity").toString());
         CartRowItem cartRowItem = new CartRowItem(product, quantity);
 
         cart.addProductInRow(cartRowItem);
