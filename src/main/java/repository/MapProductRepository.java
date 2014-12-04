@@ -1,6 +1,5 @@
 package repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Product;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
