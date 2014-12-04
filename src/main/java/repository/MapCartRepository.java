@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -14,7 +15,8 @@ import java.util.*;
 /**
  * Created by andgra on 2014-11-21.
  */
-@Service
+
+@Repository
 public class MapCartRepository implements CartRepository {
     private ProductRepository productRepository;
     private Map<String, Cart> cartMap = new HashMap<String, Cart>();

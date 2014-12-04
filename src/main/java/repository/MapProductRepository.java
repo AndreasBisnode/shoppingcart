@@ -2,6 +2,7 @@ package repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Product;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.util.*;
  * Created by andgra on 2014-11-21.
  */
 
+@Repository
 public class MapProductRepository implements ProductRepository{
     private Map<String, Product> productHashMap = new HashMap<String, Product>();
     @Override
