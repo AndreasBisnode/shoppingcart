@@ -2,6 +2,7 @@ package repository;
 
 import model.Cart;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,5 +14,5 @@ public interface CartRepository {
     List<Cart> retrieve();
     Optional<Cart> retrieve(String id);
     Optional<Cart> delete(String id);
-    Optional<Cart> addProductInCart(String cartId, String jsonProduct);
+    Optional<Cart> addProductInCart(String cartId, String jsonProductIdAndQuantity) throws IOException;
 }
