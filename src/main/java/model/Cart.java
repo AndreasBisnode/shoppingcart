@@ -2,6 +2,9 @@ package model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 
 /**
@@ -9,21 +12,21 @@ import java.util.ArrayList;
  */
 public class Cart {
 
-    private String id;
+    private final String id;
     private ArrayList<CartRowItem> rows;
     private double totalPriceIncVatAmount;
     private double totalVatAmount;
 
-    public Cart(){
-
+    @JsonCreator
+    public Cart(@JsonProperty("id") String id, @JsonProperty("rows")ArrayList<CartRowItem> rows , @JsonProperty("totalVatAmount")double totalVatAmount, @JsonProperty("totalPriceIncVatAmount")double totalPriceIncVatAmount ){
+        this.id = id;
+        this.rows = rows;
+        this.totalPriceIncVatAmount = totalPriceIncVatAmount;
+        this.totalVatAmount = totalVatAmount;
     }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public ArrayList<CartRowItem> getRows() {
@@ -40,7 +43,7 @@ public class Cart {
         return totalPriceIncVatAmount;
     }
 
-    public void setTotalPriceIncVatAmount(double totalPriceIncVatAmount) {
+    private void setTotalPriceIncVatAmount(double totalPriceIncVatAmount) {
         this.totalPriceIncVatAmount = totalPriceIncVatAmount;
     }
 
@@ -48,7 +51,7 @@ public class Cart {
         return totalVatAmount;
     }
 
-    public void setTotalVatAmount(double totalVatAmount) {
+    private void setTotalVatAmount(double totalVatAmount) {
         this.totalVatAmount = totalVatAmount;
     }
 
