@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import repository.ProductRepository;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ public class CartRowItem implements Serializable {
     public transient Product product;
     public ProductRepository productRepository;
     public double quantity;
+
 
 
     public CartRowItem(Product product, double quantity){

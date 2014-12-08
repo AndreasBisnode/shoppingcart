@@ -3,6 +3,7 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
 
 /**
  * Created by andgra on 2014-10-09.
@@ -10,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Product {
 
+    @Id
     private final String id;
     private final String name;
     private final double priceIncVat;
