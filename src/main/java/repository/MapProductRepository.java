@@ -1,6 +1,7 @@
 package repository;
 
 import model.Product;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 

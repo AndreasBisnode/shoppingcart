@@ -17,7 +17,7 @@ import java.util.*;
  * Created by andgra on 2014-11-21.
  */
 
-@Repository
+
 public class MapCartRepository implements CartRepository {
     private ProductRepository productRepository;
     private Map<String, Cart> cartMap = new HashMap<String, Cart>();

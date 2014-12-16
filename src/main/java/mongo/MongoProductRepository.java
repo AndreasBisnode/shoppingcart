@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public class MongoProductRepository implements ProductRepository {
 
-    MongoOperations mongoOperations;
+    private MongoOperations mongoOperations;
 
     @Autowired
     MongoProductRepository(MongoOperations mongoOperations){
@@ -33,20 +33,20 @@ public class MongoProductRepository implements ProductRepository {
 
     @Override
     public List<Product> retrieve() {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("id").all());
-        return mongoOperations.find(query, Product.class);
+        return mongoOperations.findAll(Product.class);
     }
 
     @Override
     public Optional<Product> retrieve(String id) {
-        return null;
+        Query query = new Query().addCriteria(Criteria.where("id").is(id));
+        return Optional.ofNullable(mongoOperations.findOne(query, Product.class));
     }
 
     @Override
     public Optional<Product> delete(String id) {
+        Query query = new Query().addCriteria(Criteria.where("id").is(id));
+        return Optional.ofNullable(mongoOperations.findAndRemove(query, Product.class));
 
-        return null;
     }
 
 
