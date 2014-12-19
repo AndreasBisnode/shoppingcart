@@ -23,8 +23,8 @@ import java.util.Optional;
 @Repository
 public class MongoCartRepository implements CartRepository {
 
-    private MongoOperations mongoOperations;
-    private ProductRepository productRepository;
+    private final MongoOperations mongoOperations;
+    private final ProductRepository productRepository;
 
     @Autowired
     MongoCartRepository(MongoOperations mongoOperations, ProductRepository productRepository){

@@ -17,7 +17,7 @@ import java.util.Optional;
 @Repository
 public class MongoProductRepository implements ProductRepository {
 
-    private MongoOperations mongoOperations;
+    private final MongoOperations mongoOperations;
 
     @Autowired
     MongoProductRepository(MongoOperations mongoOperations){
